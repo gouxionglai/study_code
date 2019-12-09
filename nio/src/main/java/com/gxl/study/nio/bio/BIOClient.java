@@ -1,6 +1,7 @@
 package com.gxl.study.nio.bio;
 
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,10 +37,14 @@ public class BIOClient {
             InputStream inputStream = socket.getInputStream();
             byte[] bytes = new byte[1024];
             int len;
-            while ((len = inputStream.read(bytes))!= -1){
-                System.out.println(new String(bytes,0,len, StandardCharsets.UTF_8));
-            }
+//            while ((len = inputStream.read(bytes))!= -1){
+//                System.out.println(new String(bytes,0,len, StandardCharsets.UTF_8));
+//            }
 //            inputStream.read();
+            inputStream.read(bytes);
+            String message = new java.lang.String(bytes, StandardCharsets.UTF_8);
+            System.out.println(message);
+
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

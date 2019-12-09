@@ -10,7 +10,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author weilai
- * @description 模拟服务器端：原始形式
+ * @description 同步阻塞io
  * @since 2019/12/6
  */
 public class BIOServer {
@@ -21,10 +21,10 @@ public class BIOServer {
         try {
             int port=8008;
             server = new ServerSocket(port);
-            //阻塞一：等待连接
             System.out.println("wait connection..");
             //一直监听
             while (true){
+                //阻塞一：等待连接
                 socket = server.accept();
                 System.out.println("connected..");
                 // 建立好连接后，从socket中获取输入流，并建立缓冲区进行读取
