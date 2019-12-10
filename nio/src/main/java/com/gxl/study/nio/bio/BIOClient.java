@@ -1,12 +1,9 @@
 package com.gxl.study.nio.bio;
 
 
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 /**
@@ -29,21 +26,23 @@ public class BIOClient {
 //            outputStream.write(message.getBytes(StandardCharsets.UTF_8));
 
             //等待控制台输入
-            Scanner scanner = new Scanner(System.in);
-            outputStream.write(scanner.next().getBytes());
-            System.out.println("start successful");
+            while (true){
+                Scanner scanner = new Scanner(System.in);
+                outputStream.write(scanner.next().getBytes());
+                System.out.println("send successful");
+            }
 
             //接收服务器返回信息
-            InputStream inputStream = socket.getInputStream();
-            byte[] bytes = new byte[1024];
-            int len;
-//            while ((len = inputStream.read(bytes))!= -1){
-//                System.out.println(new String(bytes,0,len, StandardCharsets.UTF_8));
-//            }
-//            inputStream.read();
-            inputStream.read(bytes);
-            String message = new java.lang.String(bytes, StandardCharsets.UTF_8);
-            System.out.println(message);
+//            InputStream inputStream = socket.getInputStream();
+//            byte[] bytes = new byte[1024];
+//            int len;
+////            while ((len = inputStream.read(bytes))!= -1){
+////                System.out.println(new String(bytes,0,len, StandardCharsets.UTF_8));
+////            }
+////            inputStream.read();
+//            inputStream.read(bytes);
+//            String message = new java.lang.String(bytes, StandardCharsets.UTF_8);
+//            System.out.println(message);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
+import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 
 /**
@@ -66,7 +67,7 @@ public class NIOClient2 {
                     channel.configureBlocking(false);
 
                     //在这里可以给服务端发送信息哦
-                    channel.write(ByteBuffer.wrap(new String("向服务端发送了一条信息").getBytes()));
+                    channel.write(ByteBuffer.wrap("客户端给你发送了一条消息".getBytes()));
                     //在和服务端连接成功之后，为了可以接收到服务端的信息，需要给通道设置读的权限。
                     channel.register(this.selector, SelectionKey.OP_READ);
 
@@ -89,13 +90,13 @@ public class NIOClient2 {
         // 服务器可读取消息:得到事件发生的Socket通道
         SocketChannel channel = (SocketChannel) key.channel();
         // 创建读取的缓冲区
-        ByteBuffer buffer = ByteBuffer.allocate(10);
+        ByteBuffer buffer = ByteBuffer.allocate(512);
         channel.read(buffer);
         byte[] data = buffer.array();
-        String msg = new String(data).trim();
-        System.out.println("服务端收到信息：" + msg);
-        ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes());
-        channel.write(outBuffer);// 回送消息
+        String msg = new String(data, StandardCharsets.UTF_8);
+        System.out.println("服务端回执信息：" + msg);
+//        ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes());
+//        channel.write(outBuffer);// 回送消息
     }
 
 

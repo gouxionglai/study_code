@@ -3,12 +3,15 @@ package com.gxl.study.nio.nio;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.*;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 
 /**
  * @author weilai
- * @description 异步非阻塞io
+ * @description 同步非阻塞io
  * @since 2019/12/9
  */
 public class NIOServer2 {
@@ -50,7 +53,9 @@ public class NIOServer2 {
             // 获得selector中选中的项的迭代器，选中的项为注册的事件
             Iterator ite = this.selector.selectedKeys().iterator();
             while (ite.hasNext()) {
+                System.out.println("===========ite:"+ite);
                 SelectionKey key = (SelectionKey) ite.next();
+                System.out.println("===========key:"+key);
                 // 删除已选的key,以防重复处理
                 ite.remove();
                 // 客户端请求连接事件
@@ -63,11 +68,13 @@ public class NIOServer2 {
                     channel.configureBlocking(false);
 
                     //在这里可以给客户端发送信息哦
-                    channel.write(ByteBuffer.wrap(new String("向客户端发送了一条信息").getBytes()));
+                    channel.write(ByteBuffer.wrap("服务器已经收到消息了!".getBytes()));
                     //在和客户端连接成功之后，为了可以接收到客户端的信息，需要给通道设置读的权限。
+                    System.out.println("===========register key:"+key);
                     channel.register(this.selector, SelectionKey.OP_READ);
                     // 获得了可读的事件
                 } else if (key.isReadable()) {
+                    System.out.println("===========read key:"+key);
                     read(key);
                 }
             }
@@ -84,13 +91,15 @@ public class NIOServer2 {
         // 服务器可读取消息:得到事件发生的Socket通道
         SocketChannel channel = (SocketChannel) key.channel();
         // 创建读取的缓冲区
-        ByteBuffer buffer = ByteBuffer.allocate(10);
-        channel.read(buffer);
-        byte[] data = buffer.array();
-        String msg = new String(data).trim();
-        System.out.println("服务端收到信息：" + msg);
-        ByteBuffer outBuffer = ByteBuffer.wrap(msg.getBytes());
-        channel.write(outBuffer);// 将消息回送给客户端
+        ByteBuffer buffer = ByteBuffer.allocate(5);
+        int len = channel.read(buffer);
+        if(len >0){
+            buffer.flip();
+            System.out.println("received : " + new String(buffer.array()));
+        }else{
+            //没有消息了需要将注册移除，不然会一直read。但是实际又没有消息
+            key.cancel();
+        }
     }
 
     /**
