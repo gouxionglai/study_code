@@ -1,5 +1,6 @@
 package com.gxl.study.nio.nio;
 
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -91,15 +92,20 @@ public class NIOServer2 {
         // 服务器可读取消息:得到事件发生的Socket通道
         SocketChannel channel = (SocketChannel) key.channel();
         // 创建读取的缓冲区
-        ByteBuffer buffer = ByteBuffer.allocate(5);
-        int len = channel.read(buffer);
-        if(len >0){
+        ByteBuffer buffer = ByteBuffer.allocate(512);
+//        buffer.remaining()
+        StringBuilder sb = new StringBuilder();
+        //如果长度超过byteBuffer一次性读取完
+        while ( channel.read(buffer)>0){
             buffer.flip();
-            System.out.println("received : " + new String(buffer.array()));
-        }else{
-            //没有消息了需要将注册移除，不然会一直read。但是实际又没有消息
-            key.cancel();
+            sb.append(new String(buffer.array())).append("+");
         }
+        System.out.println("received : " + sb.toString());
+
+//        else{
+//            //没有消息了需要将注册移除，不然会一直read。但是实际又没有消息
+//            key.cancel();
+//        }
     }
 
     /**
