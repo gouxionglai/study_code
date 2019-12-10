@@ -63,16 +63,16 @@ public class NIOServer2 {
                 if (key.isAcceptable()) {
                     ServerSocketChannel server = (ServerSocketChannel) key.channel();
 
-                    // 获得和客户端连接的通道
-                    SocketChannel channel = server.accept();
+                    // 获得和客户端连接的通道：真正和客户端通信的通道
+                    SocketChannel responeceChannel = server.accept();
                     // 设置成非阻塞
-                    channel.configureBlocking(false);
+                    responeceChannel.configureBlocking(false);
 
                     //在这里可以给客户端发送信息哦
-                    channel.write(ByteBuffer.wrap("服务器已经收到消息了!".getBytes()));
+                    responeceChannel.write(ByteBuffer.wrap("服务器已经收到消息了!".getBytes()));
                     //在和客户端连接成功之后，为了可以接收到客户端的信息，需要给通道设置读的权限。
                     System.out.println("===========register key:"+key);
-                    channel.register(this.selector, SelectionKey.OP_READ);
+                    responeceChannel.register(this.selector, SelectionKey.OP_READ);
                     // 获得了可读的事件
                 } else if (key.isReadable()) {
                     System.out.println("===========read key:"+key);
