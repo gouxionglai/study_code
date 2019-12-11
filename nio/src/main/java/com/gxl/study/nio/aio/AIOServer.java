@@ -40,18 +40,6 @@ public class AIOServer {
         this.serverChannel = AsynchronousServerSocketChannel.open().bind(new InetSocketAddress(port), 100);
         this.serverChannel.accept(this, new AcceptHandler());
 
-        Thread t = new Thread(() -> {
-            while (true) {
-                System.out.println("运行中...");
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-        t.start();
-
     }
 
 

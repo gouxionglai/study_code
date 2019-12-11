@@ -64,12 +64,13 @@ public class NIOServer2 {
                     ServerSocketChannel server = (ServerSocketChannel) key.channel();
 
                     // 获得和客户端连接的通道：真正和客户端通信的通道
+                    // 完成该操作意味着完成TCP三次握手，TCP物理链路正式建立
                     SocketChannel responeceChannel = server.accept();
                     // 设置成非阻塞
                     responeceChannel.configureBlocking(false);
 
                     //在这里可以给客户端发送信息哦
-                    responeceChannel.write(ByteBuffer.wrap("服务器已经收到消息了!".getBytes()));
+//                    responeceChannel.write(ByteBuffer.wrap("服务器已经收到消息了!".getBytes()));
                     //在和客户端连接成功之后，为了可以接收到客户端的信息，需要给通道设置读的权限。
                     System.out.println("===========register key:"+key);
                     responeceChannel.register(this.selector, SelectionKey.OP_READ);
