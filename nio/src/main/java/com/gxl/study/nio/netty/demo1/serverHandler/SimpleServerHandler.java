@@ -38,6 +38,8 @@ public class SimpleServerHandler extends ChannelInboundHandlerAdapter {
         ByteBuf bufResponse = ctx.alloc().buffer(4 * response.length());
         bufResponse.writeBytes(response.getBytes());
         ctx.writeAndFlush(bufResponse);
+        //手动释放 ByteBuf
+//        ReferenceCountUtil.release(msg);
 //        super.channelRead(ctx, msg);
     }
 

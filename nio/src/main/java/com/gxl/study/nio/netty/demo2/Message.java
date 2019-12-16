@@ -5,7 +5,6 @@ import io.netty.buffer.Unpooled;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 /**
  * Message.java
@@ -62,11 +61,7 @@ public class Message {
             out.write(intToBytes2(header.getCammand()));
             out.write(bbb);
             out.write('\n');
-        } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return out.toByteArray();
