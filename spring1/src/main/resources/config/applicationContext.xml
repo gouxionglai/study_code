@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd"
+>
+
+    <!--开启自动aop注解-->
+    <!--<aop:aspectj-autoproxy/>-->
+    
+    <!--1 容器中加入目标类-->
+    <bean id="mathiccc" class="com.cn.springdemo.aop.Mathic"/>
+    <!--2 容器中加入切面类-->
+    <bean id="mathicAspect" class="com.cn.springdemo.aopConfig.MathicAspect"/>
+
+    <!--3 关联关系-->
+    <aop:config >
+        <!--定义切入点-->
+        <aop:pointcut id="pointcut" expression="execution(* com.cn.springdemo.aop.Mathic.*(..))"/>
+        <!--4 定义切面-->
+        <aop:aspect ref="mathicAspect">
+            <!--某一个面：定义什么通知使用在什么切入点-->
+            <aop:before method="beforeMethod" pointcut-ref="pointcut"/>
+            <aop:after method="afterMethod" pointcut-ref="pointcut"/>
+            <aop:around method="aroundMethod" pointcut-ref="pointcut"/>
+        </aop:aspect>
+    </aop:config>
+
+
+
+    <!-- 开启注解
+        扫描包以及子包：base-package ="com.cn.springdemo.annotation"
+        匹配包名：resource-pattern="annotation/*.class"
+    -->
+    <context:component-scan base-package="com.cn.springdemo.aop"/>
+    <!--<context:component-scan base-package="com.cn.springdemo.annotation">-->
+        <!--&lt;!&ndash;不扫描Service注解&ndash;&gt;-->
+        <!--&lt;!&ndash;<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>&ndash;&gt;-->
+        <!--&lt;!&ndash;只扫描Controller注解  和不扫描互斥，并且需要再component-scan 配置use-default-filters="false" &ndash;&gt;-->
+        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+    <!--</context:component-scan>-->
+    <!-- 加载配置文件-->
+    <context:property-placeholder location="classpath:config/jdbc.properties"/>
+
+
+
+
+    <!--如果是多个配置文件 则采用逗号分隔
+    <context:property-placeholder location="classpath:config/jdbc.properties,classpath:config/redis-config.properties"/>
+    -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="url" value="${url}"/>
+        <property name="username" value="${username}"/>
+        <property name="password" value="${password}"/>
+        <property name="driverClassName" value="${driverClassName}"/>
+    </bean>
+
+    <bean id="helloworld" class="com.cn.springdemo.bean.Helloworld" init-method="init" destroy-method="destroy">
+        <property name="name2" value="aha spring test"/>
+    </bean>
+
+
+</beans>
