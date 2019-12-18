@@ -1,0 +1,101 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 使用Annotation自动注册Bean,扫描@Controller和@ControllerAdvice-->
+    <context:component-scan base-package="com.gxl.framework.controller"
+                            use-default-filters="false">
+        <!-- base-package 如果多个，用“,”分隔 -->
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+
+        <!--控制器增强，使一个Contoller成为全局的异常处理类，类中用@ExceptionHandler方法注解的方法可以处理所有Controller发生的异常-->
+        <context:include-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+
+    <!-- 配置自定义转换器 注意: 一定要将自定义的转换器配置到注解驱动上 -->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <!-- 指定自定义转换器的全路径名称 -->
+                <!-- 日期自定义转换器 -->
+                <bean class="com.gxl.framework.converter.CustomDateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+
+    <!-- Spring 来扫描指定包下的类，并注册被@Component，@Controller，@Service，@Repository等注解标记的组件 -->
+    <mvc:annotation-driven conversion-service="conversionService">
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="UTF-8"/>
+        <!-- 指定所上传文件的总大小不能超过100M。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和 -->
+        <property name="maxUploadSize" value="1100000000"/>
+    </bean>
+
+    <!-- 配置SpringMVC的视图解析器 -->
+    <bean
+            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/pages/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--<mvc:interceptors>-->
+        <!--&lt;!&ndash;登录拦截器&ndash;&gt;-->
+        <!--<mvc:interceptor>-->
+            <!--<mvc:mapping path="/**"/>-->
+            <!--<bean class="cn.edu.cuit.framework.web.handler.interceptor.LoginInterceptor">-->
+                <!--<property name="allowUrls">-->
+                    <!--<list>-->
+                        <!--&lt;!&ndash; 如果请求中包含以下路径，则不进行拦截 &ndash;&gt;-->
+                        <!--<value>/qrcode.png</value>-->
+                        <!--<value>/login</value>-->
+                        <!--<value>/loginIndex</value>-->
+                        <!--<value>/webservice/api/mobile/platform/login</value>-->
+                        <!--<value>/platform/clientversion/downloadLatestQR</value>-->
+                        <!--<value>/css</value>-->
+                        <!--<value>/img</value>-->
+                        <!--<value>/js</value>-->
+                        <!--<value>/userfiles/upload/</value>-->
+                        <!--<value>/userfiles/user/photo/</value>-->
+                        <!--<value>/ckeditor/plugins/smiley/images/</value>-->
+                        <!--&lt;!&ndash;小程序公开api&ndash;&gt;-->
+                        <!--<value>/webservice/api/wechat/miniprogram/</value>-->
+                        <!--&lt;!&ndash;融云公开路由&ndash;&gt;-->
+                        <!--<value>/webservice/api/mobile/oa/im/openapi/</value>-->
+                    <!--</list>-->
+                <!--</property>-->
+            <!--</bean>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+
+    <!-- 配置静态资源访问 -->
+    <!-- <mvc:default-servlet-handler /> -->
+    <!--<mvc:resources mapping="/**" location="/"/>-->
+    <!--<mvc:resources mapping="/css/**" location="/css/"/>-->
+    <!--<mvc:resources mapping="/img/**" location="/img/"/>-->
+    <!--<mvc:resources mapping="/js/**" location="/js/"/>-->
+    <!--<mvc:resources mapping="/userfiles/upload/**" location="/userfiles/upload/"/>-->
+    <!--<mvc:resources mapping="/userfiles/user/photo/**" location="/userfiles/user/photo/"/>-->
+
+</beans>
