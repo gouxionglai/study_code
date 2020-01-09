@@ -32,7 +32,7 @@
 
     <!-- Spring 来扫描指定包下的类，并注册被@Component，@Controller，@Service，@Repository等注解标记的组件 -->
     <!-- 开启注解驱动 和jackson搭配使用 @ResponseBody返回json格式-->
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven conversion-service="conversionService"/>
     <!--<mvc:annotation-driven conversion-service="conversionService">-->
         <!--<mvc:message-converters>-->
             <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
@@ -55,8 +55,7 @@
     </bean>
 
     <!-- 配置SpringMVC的视图解析器 -->
-    <bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
         <property name="prefix" value="/WEB-INF/pages/"/>
         <property name="suffix" value=".jsp"/>

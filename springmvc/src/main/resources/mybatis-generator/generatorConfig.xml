@@ -35,7 +35,7 @@
         </javaTypeResolver>
 
         <!-- 生成实体类地址 -->
-        <javaModelGenerator targetPackage="com.gxl.framework.model.Demo" targetProject="${project}" >
+        <javaModelGenerator targetPackage="com.gxl.framework.model" targetProject="${project}" >
             <!-- enableSubPackages:是否让schema作为包的后缀 -->
             <property name="enableSubPackages" value="false"/>
             <!-- 从数据库返回的值被清理前后的空格 -->
@@ -54,9 +54,11 @@
         </javaClientGenerator>
 
 
-        <table tableName="*" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
+        <table tableName="%" enableCountByExample="false" enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false" selectByExampleQueryId="false">
             <property name="useActualColumnNames" value="true" />
             <generatedKey column="id" sqlStatement="Mysql" identity="true" />
+            <!--指定类型的转换-->
+            <columnOverride column="text_filed" jdbcType="VARCHAR" />
         </table>
 
     </context>
