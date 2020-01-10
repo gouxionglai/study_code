@@ -91,12 +91,15 @@
     <!--</mvc:interceptors>-->
 
     <!-- 配置静态资源访问 -->
-    <!-- <mvc:default-servlet-handler /> -->
-    <!--<mvc:resources mapping="/**" location="/"/>-->
-    <!--<mvc:resources mapping="/css/**" location="/css/"/>-->
-    <!--<mvc:resources mapping="/img/**" location="/img/"/>-->
-    <!--<mvc:resources mapping="/js/**" location="/js/"/>-->
-    <!--<mvc:resources mapping="/userfiles/upload/**" location="/userfiles/upload/"/>-->
-    <!--<mvc:resources mapping="/userfiles/user/photo/**" location="/userfiles/user/photo/"/>-->
+    <!-- 方式一 -->
+    <!--<mvc:default-servlet-handler />-->
+
+    <!-- 方式二 -->
+    <mvc:resources mapping="/**" location="/" />
+    <mvc:resources mapping="/css/**" location="/css/"/>
+    <mvc:resources mapping="/img/**" location="/img/"/>
+    <mvc:resources mapping="/js/**" location="/js/"/>
+    <mvc:resources mapping="/userfiles/upload/**" location="/userfiles/upload/"/>
+    <mvc:resources mapping="/userfiles/user/photo/**" location="/userfiles/user/photo/"/>
 
 </beans>
