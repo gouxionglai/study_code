@@ -27,6 +27,7 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 
 /**
  * 全局异常处理器
+ * 捕获异常，良好处理后抛出
  *
  */
 

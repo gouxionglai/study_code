@@ -6,12 +6,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Date;
@@ -41,7 +43,7 @@ public class DemoController implements Serializable {
 
 
     @RequestMapping(value ="/test2",method = {RequestMethod.POST},params = {"name=嘿嘿嘿","age"},headers = {"User-Agent"})
-    public Object test2(Model model, Date date,@RequestParam(name = "age") String userAge){
+    public Object test2(Model model, Date date,@RequestParam(required = true, value = "age",defaultValue = "0") String userAge){
         String message = "hello world222!!!哈哈哈哈";
         System.out.println(message);
         System.out.println(userAge);
@@ -114,6 +116,44 @@ public class DemoController implements Serializable {
     public Object testAjax1(User user){
 
         user.setId(2L);
+        user.setName("哈哈哈");
         return user;
+    }
+
+
+
+    @RequestMapping("to_upload")
+    public String to_upload(){
+        System.out.println("to_upload执行了");
+        return "upload/upload";
+    }
+
+    //@ResponseBody
+    @RequestMapping("upload")
+    public Object upload(HttpServletRequest request, MultipartFile file){
+        int i = 1/0;
+        if(file != null){
+            System.out.println(file.getName());
+            System.out.println(file.getOriginalFilename());
+            //上传
+            String path = request.getSession().getServletContext().getRealPath("/uploads/");
+            System.out.println(path);
+            File dest = new File(path+"/upload");
+            if(!dest.exists()){
+                dest.mkdirs();
+            }
+            File newFile = new File(dest,file.getOriginalFilename());
+            try {
+                file.transferTo(newFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        System.out.println("upload");
+        HashMap map = new HashMap();
+        map.put("code",1);
+        map.put("msg","上传成功");
+        return map;
     }
 }

@@ -5,8 +5,14 @@
     <meta charset="UTF-8">--%>
 
     <script type="text/javascript" src="js/jquery-3.4.1.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
 </head>
 <body>
+<div id="progressDialogDivId" style="display: none; position: absolute;">
+    <img alt="image" src="img/loaders/4.gif">
+</div>
+<div id="openModal" style="display: none;"></div>
+
 <h2>Hello World!</h2>
 <!--指定提交的时候编码方式-->
 <form action="demo/test2" method="post" accept-charset="UTF-8">
@@ -25,6 +31,23 @@
 
 <button onclick="showMessage()">按钮</button>
 <br/>
+<button onclick="redirectPage('demo/to_upload')">跳转上传</button>
+<br/>
+
+<div id="main-content">
+    <div class="container">
+        <div class="row">
+            <div id="content" class="col-lg-12">
+                <jsp:include page="WEB-INF/pages/index_content.jsp" flush="true"></jsp:include>
+            </div>
+        </div>
+    </div>
+    <div class="footer-tools">
+                            <span class="go-top">
+                                <i class="fa fa-chevron-up"></i> Top
+                            </span>
+    </div>
+</div>
 </body>
 
 <script>
