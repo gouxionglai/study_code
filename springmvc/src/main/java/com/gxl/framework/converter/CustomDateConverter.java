@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * 日期转换器
- * @author zhaowei
  *
  */
 public class CustomDateConverter implements Converter<String, Date>{

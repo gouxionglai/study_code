@@ -5,6 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -128,10 +131,9 @@ public class DemoController implements Serializable {
         return "upload/upload";
     }
 
-    //@ResponseBody
+    @ResponseBody
     @RequestMapping("upload")
     public Object upload(HttpServletRequest request, MultipartFile file){
-        int i = 1/0;
         if(file != null){
             System.out.println(file.getName());
             System.out.println(file.getOriginalFilename());
@@ -155,5 +157,37 @@ public class DemoController implements Serializable {
         map.put("code",1);
         map.put("msg","上传成功");
         return map;
+    }
+
+
+    @RequestMapping("/testRedirect")
+    public String testRedirect(){
+        System.out.println("testRedirect 执行了...");
+        //跳转执行该controller的test方法
+        return "redirect: test";
+    }
+
+
+    @RequestMapping(value ="/testBindData")
+    public Object testBindData(Model model, @Validated({User.doInsert.class}) User user, BindingResult result){
+        System.out.println("testBindData 执行了...");
+        HashMap errorMessage = new HashMap();
+        if(result.getErrorCount()>0){
+            for(FieldError error : result.getFieldErrors()){
+                errorMessage.put(error.getField(),error.getDefaultMessage());
+                System.out.println("绑定过程中报错了："+ error.getField() +"---"+error.getDefaultMessage());
+            }
+            model.addAttribute("errorMessage",errorMessage);
+            user.setId(2L);
+            model.addAttribute("user",user);
+            return "index";
+        }else{
+            user.setId(3L);
+            model.addAttribute("user",user);
+
+            //跳转到xx/welcome.jsp页面
+            return "welcome";
+        }
+
     }
 }

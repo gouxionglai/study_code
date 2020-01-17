@@ -32,20 +32,19 @@
 
     <!-- Spring 来扫描指定包下的类，并注册被@Component，@Controller，@Service，@Repository等注解标记的组件 -->
     <!-- 开启注解驱动 和jackson搭配使用 @ResponseBody返回json格式-->
-    <mvc:annotation-driven conversion-service="conversionService"/>
-    <!--<mvc:annotation-driven conversion-service="conversionService">-->
-        <!--<mvc:message-converters>-->
-            <!--<bean class="org.springframework.http.converter.StringHttpMessageConverter">-->
-                <!--<property name="supportedMediaTypes">-->
-                    <!--<list>-->
-                        <!--<value>text/plain;charset=UTF-8</value>-->
-                        <!--<value>text/html;charset=UTF-8</value>-->
-                        <!--<value>application/json;charset=UTF-8</value>-->
-                    <!--</list>-->
-                <!--</property>-->
-            <!--</bean>-->
-        <!--</mvc:message-converters>-->
-    <!--</mvc:annotation-driven>-->
+    <mvc:annotation-driven conversion-service="conversionService">
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>text/plain;charset=UTF-8</value>
+                        <value>text/html;charset=UTF-8</value>
+                        <value>application/json;charset=UTF-8</value>
+                    </list>
+                </property>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
 
     <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
@@ -102,4 +101,11 @@
     <mvc:resources mapping="/userfiles/upload/**" location="/userfiles/upload/"/>
     <mvc:resources mapping="/userfiles/user/photo/**" location="/userfiles/user/photo/"/>
 
+    <!--国际化-->
+    <!--<bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basename" value="i18n"></property>
+    </bean>-->
+
+    <!--直接响应页面 无需通过controller转发 view-name也是根据视图解析器自动拼前后缀-->
+    <mvc:view-controller path="/directjsp" view-name="test/target1"/>
 </beans>
