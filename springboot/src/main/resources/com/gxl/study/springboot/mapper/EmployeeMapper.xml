@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxl.study.springboot.mapper.EmployeeMapper">
+    <resultMap id="BaseResultMap" type="com.gxl.study.springboot.model.Employee">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="last_name" jdbcType="VARCHAR" property="lastName" />
+        <result column="email" jdbcType="TINYINT" property="email" />
+        <result column="gender" jdbcType="VARCHAR" property="gender" />
+        <result column="department" jdbcType="INTEGER" property="department" />
+        <result column="birth" jdbcType="TIMESTAMP" property="birth" />
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `last_name`, `email`, gender, department, birth
+    </sql>
+    <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from employee
+        where id = #{id}
+    </select>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from employee
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="com.gxl.study.springboot.model.Employee">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into employee (`last_name`, `email`, gender,
+        department, birth)
+        values (#{lastName,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT},
+        #{department,jdbcType=INTEGER}, #{birth,jdbcType=TIMESTAMP})
+    </insert>
+    <insert id="insertSelective" parameterType="com.gxl.study.springboot.model.Employee">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into employee
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="last_name != null">
+                `last_name`,
+            </if>
+            <if test="email != null">
+                `email`,
+            </if>
+            <if test="gender != null">
+                gender,
+            </if>
+            <if test="department != null">
+                department,
+            </if>
+            <if test="birth != null">
+                birth,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{lastName},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="gender != null">
+                #{gender},
+            </if>
+            <if test="department != null">
+                #{department},
+            </if>
+            <if test="birth != null">
+                #{birth},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.gxl.study.springboot.model.Employee">
+        update employee
+        <set>
+            <if test="last_name != null">
+                `last_name` = #{lastName,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                `email` = #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,jdbcType=TINYINT},
+            </if>
+            <if test="department != null">
+                department = #{department,jdbcType=INTEGER},
+            </if>
+            <if test="birth != null">
+                birth = #{birth,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="update" parameterType="com.gxl.study.springboot.model.Employee">
+        update employee
+        set `last_name` = #{lastName,jdbcType=VARCHAR},
+        `email` = #{email,jdbcType=VARCHAR},
+        gender = #{gender,jdbcType=TINYINT},
+        department = #{department,jdbcType=INTEGER},
+        birth = #{birth,jdbcType=TIMESTAMP}
+        where id = #{id}
+    </update>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        de.department_name as department_name,
+        em.id as id,
+               em.last_name as last_name,
+               em.email as email,
+               em.gender as gender,
+               em.department as department,
+               em.birth as birth
+        from employee em
+        left join department de on em.department = de.id
+    </select>
+</mapper>

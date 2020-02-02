@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxl.study.springboot.mapper.DepartmentMapper">
+    <resultMap id="BaseResultMap" type="com.gxl.study.springboot.model.Department">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="department_name" jdbcType="VARCHAR" property="departmentName" />
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, `department_name`
+    </sql>
+    <select id="getById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from department
+        where id = #{id}
+    </select>
+    <delete id="delete" parameterType="java.lang.Integer">
+        delete from department
+        where id = #{id}
+    </delete>
+    <insert id="insert" parameterType="com.gxl.study.springboot.model.Department">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into department (`department_name`)
+        values (#{departmentName,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.gxl.study.springboot.model.Department">
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into department
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="department_name != null">
+                `department_name`,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{departmentName},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.gxl.study.springboot.model.Department">
+        update department
+        <set>
+            <if test="department_name != null">
+                `department_name` = #{departmentName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="update" parameterType="com.gxl.study.springboot.model.Department">
+        update department
+        set `department_name` = #{departmentName,jdbcType=VARCHAR}
+        where id = #{id}
+    </update>
+
+    <select id="getAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from department
+    </select>
+</mapper>

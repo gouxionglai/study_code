@@ -1,0 +1,17 @@
+server:
+  port: 8009
+  path: /springboot
+  servlet:
+    context-path: /api
+
+#person:
+#    name: 张三
+#    age: 21
+#    sex: 1
+#    animals:
+##数组用-空格 值的形式来表示
+#      - {name: hh, age: 0.1}
+#      - {name: 端午, age: 0.5}
+
+#debug模式 可以显示springboot自动配置情况
+debug: true

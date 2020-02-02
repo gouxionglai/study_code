@@ -1,0 +1,57 @@
+#自定义的starter
+gxl:
+  hello:
+    prefix: 嘿嘿嘿2
+    suffix: 哈哈哈2
+
+
+server:
+  #访问端口
+  port: 8008
+  servlet:
+    #访问前缀
+    context-path: /api
+#person:
+#    name: 张三
+#    age: 21
+#    sex: 1
+#    animals:
+#      #数组用-空格 值的形式来表示
+#      - {name: hh, age: 0.1}
+#      - {name: 端午, age: 0.5}
+spring:
+  profiles:
+    #激活dev环境
+    active: dev
+  #mysql数据库
+  datasource:
+    url: jdbc:mysql://47.107.144.99:3306/study?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: dba
+    password: qwer12356
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 47.107.144.99
+    password: qwer12356
+mybatis:
+  #指定使用驼峰的package
+  #typeAliasesPackage: com.gxl.study.springboot.mapper
+  #configuration:
+  #  map-underscore-to-camel-case: true
+  #mapper-locations: classpath:mapper/*Mapper.xml
+  mapper-locations: classpath:com.gxl.study.springboot.mapper/*Mapper.xml
+
+
+---
+
+#---表示分块
+server:
+     port: 8080
+spring:
+  #表示当前环境是dev环境
+  profiles: dev
+
+---
+spring:
+     profiles: prod
+server:
+     port: 80
