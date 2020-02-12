@@ -25,12 +25,18 @@ spring:
     active: dev
   #mysql数据库
   datasource:
-    url: jdbc:mysql://47.107.144.99:3306/study?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://47.107.144.991:3306/study?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     username: dba
     password: qwer12356
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: 47.107.144.99
+    host: 47.107.144.991
+    password: qwer12356
+    port: 6379
+  rabbitmq:
+    host: 47.107.144.991
+    port: 5672
+    username: guest
     password: qwer12356
 mybatis:
   #指定使用驼峰的package
