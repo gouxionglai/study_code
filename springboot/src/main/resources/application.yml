@@ -38,6 +38,18 @@ spring:
     port: 5672
     username: guest
     password: qwer12356
+  mail:
+    host: smtp.163.com
+    username: gouxionglai@163.com
+    password: qwer12356
+    protocol: smtp
+    properties:
+      mail:
+        smtp:
+          auth: true
+#        starttls:
+#          enable: true
+#          required: true
 mybatis:
   #指定使用驼峰的package
   #typeAliasesPackage: com.gxl.study.springboot.mapper
@@ -45,7 +57,6 @@ mybatis:
   #  map-underscore-to-camel-case: true
   #mapper-locations: classpath:mapper/*Mapper.xml
   mapper-locations: classpath:com.gxl.study.springboot.mapper/*Mapper.xml
-
 
 ---
 

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+    您好,这是验证邮件,请点击下面的链接完成验证:
+    <br/>
+    <h2>
+        <span th:text="${uid}">213123</span>
+        <!--这里不能写动态的server前缀 必须固定 应该是编译期不一样导致的-->
+        <!--<a href="#" th:href="@{/emp/{id}(id=${uid})}">激活账号</a>-->
+        <a href="#" th:href="@{ http://www.baidu.com/{id}(id=${uid}) }">激活账号</a>
+    </h2>
+</body>
+</html>

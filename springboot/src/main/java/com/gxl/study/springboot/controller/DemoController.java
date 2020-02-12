@@ -1,5 +1,6 @@
 package com.gxl.study.springboot.controller;
 
+import com.gxl.study.springboot.service.MailService;
 import com.gxl.study.springboot.service.SomeAsyncService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,8 @@ import java.util.Map;
 public class DemoController {
     @Autowired
     private SomeAsyncService asyncService;
+    @Autowired
+    private MailService mailService;
 
     private Logger logger = LoggerFactory.getLogger(DemoController.class);
 
@@ -46,4 +49,18 @@ public class DemoController {
         asyncService.doSomething();
         return "success";
     }
+
+    @ResponseBody
+    @GetMapping("/sendmail")
+    public Object sendMail(){
+        String id = "006";
+        String to = "352949107@qq.com";
+        try {
+            mailService.sendTemplateMail(id,to);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "success";
+    }
+
 }

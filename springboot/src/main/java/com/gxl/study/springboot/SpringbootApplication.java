@@ -16,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 //MapperScan扫描的是java文件
 //yml里面配置的是xml文件地址
 @MapperScan("com.gxl.study.springboot.mapper")
-@EnableWebMvc
+//@EnableWebMvc  开启后拦截静态资源会出问题
 @SpringBootApplication
 public class SpringbootApplication {
 

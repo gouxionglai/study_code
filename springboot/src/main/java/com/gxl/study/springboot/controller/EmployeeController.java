@@ -10,7 +10,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class EmployeeController {
@@ -83,6 +85,15 @@ public class EmployeeController {
         employeeMapper.delete(id);
         System.out.println(employeeMapper.getAll());
         return "redirect:/emps";
+    }
+
+    @ResponseBody
+    @GetMapping("/confirm")
+    public Object confirmMail(){
+        Map map = new HashMap<>();
+        map.put("code",1);
+        map.put("msg","your account has been successfully confirmed!!!");
+        return map;
     }
 
 }
