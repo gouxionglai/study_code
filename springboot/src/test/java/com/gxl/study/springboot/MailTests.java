@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.thymeleaf.TemplateEngine;
 
-//import javax.naming.Context;
 
 /**
  * @author gouxi
@@ -32,7 +31,7 @@ public class MailTests {
     }
 
 
-    //异步方法无法调用
+    //异步方法无法调用, 因为测试的主线程执行完后就直接关闭了，没等到子线程去异步执行
 //    @Test
 //    public void sendTemplateMail() {
 //        String id = "006";

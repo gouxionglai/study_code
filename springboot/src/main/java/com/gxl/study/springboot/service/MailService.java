@@ -90,7 +90,8 @@ public class MailService {
         //注意：process第一个参数名称要和templates下的模板名称一致。要不然会报错
         try{
             String emailContent = templateEngine.process("mail/emailTemplate", context);
-            this.sendMimeMail("这是账号验证模板", emailContent, null, to);
+            File attachment = new File("C:\\Users\\gouxi\\Pictures\\856736d1f3ec9eaedb2985d875fd653e.gif");
+            this.sendMimeMail("这是账号验证模板", emailContent, attachment, to);
         }catch(Exception e){
             logger.error("邮件发送失败", e.getMessage());
         }
