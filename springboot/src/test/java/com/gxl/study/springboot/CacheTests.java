@@ -49,6 +49,8 @@ public class CacheTests {
             System.out.println(employee);
             //需要实现序列化接口才能存储。因为默认使用的jdk序列化规则
             valueOperations.set("emp1",employee);
+            //相当于命令setnx key value,防止数据覆盖
+            valueOperations.setIfAbsent("emp1",new Employee());
         }
     }
 }

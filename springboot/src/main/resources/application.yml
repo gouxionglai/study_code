@@ -25,16 +25,16 @@ spring:
     active: dev
   #mysql数据库
   datasource:
-    url: jdbc:mysql://47.107.144.991:3306/study?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://47.107.144.99:3306/study?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     username: dba
     password: qwer12356
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
-    host: 47.107.144.991
+    host: 47.107.144.99
     password: qwer12356
     port: 6379
   rabbitmq:
-    host: 47.107.144.991
+    host: 47.107.144.99
     port: 5672
     username: guest
     password: qwer12356
@@ -62,7 +62,7 @@ mybatis:
 
 #---表示分块
 server:
-     port: 8080
+  port: 8080
 spring:
   #表示当前环境是dev环境
   profiles: dev

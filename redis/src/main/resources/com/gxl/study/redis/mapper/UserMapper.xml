@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gxl.study.redis.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.gxl.study.redis.model.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uno" jdbcType="VARCHAR" property="uno" />
+    <result column="uname" jdbcType="VARCHAR" property="uname" />
+    <result column="upass" jdbcType="VARCHAR" property="upass" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, uno, uname, upass, remark
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.gxl.study.redis.model.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user (uno, uname, upass, 
+      remark)
+    values (#{uno,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR}, #{upass,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.gxl.study.redis.model.User">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uno != null">
+        uno,
+      </if>
+      <if test="uname != null">
+        uname,
+      </if>
+      <if test="upass != null">
+        upass,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uno != null">
+        #{uno,jdbcType=VARCHAR},
+      </if>
+      <if test="uname != null">
+        #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="upass != null">
+        #{upass,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.gxl.study.redis.model.User">
+    update user
+    <set>
+      <if test="uno != null">
+        uno = #{uno,jdbcType=VARCHAR},
+      </if>
+      <if test="uname != null">
+        uname = #{uname,jdbcType=VARCHAR},
+      </if>
+      <if test="upass != null">
+        upass = #{upass,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.gxl.study.redis.model.User">
+    update user
+    set uno = #{uno,jdbcType=VARCHAR},
+      uname = #{uname,jdbcType=VARCHAR},
+      upass = #{upass,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="findSelective" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user
+    <include refid="searchBase"/>
+  </select>
+
+  <sql id="searchBase">
+    <trim prefix="where" prefixOverrides="and|or">
+      <if test="id !=null">
+        and id = #{id}
+      </if>
+      <if test="uname !=null and uname !=''">
+        and uname = #{uname}
+      </if>
+      <if test="upass !=null and upass !=''">
+        and upass = #{upass}
+      </if>
+    </trim>
+
+  </sql>
+</mapper>

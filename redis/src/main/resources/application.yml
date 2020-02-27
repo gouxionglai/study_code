@@ -1,0 +1,25 @@
+server:
+  #访问端口
+  port: 8008
+  servlet:
+    #访问前缀
+    context-path: /api
+spring:
+  profiles:
+    #激活dev环境
+    active: dev
+  #mysql数据库
+  datasource:
+    url: jdbc:mysql://localhost:3306/study?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    host: 47.107.144.99
+    password: qwer12356
+    port: 6379
+
+mybatis:
+  mapper-locations: classpath:com.gxl.study.redis.mapper/*Mapper.xml
+
+debug: true
