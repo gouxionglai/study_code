@@ -3,6 +3,8 @@ package com.gxl.study.redis.service;
 import com.gxl.study.redis.mapper.UserMapper;
 import com.gxl.study.redis.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +24,10 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    private HashOperations<String,Integer,User> hashOperations;
 
     public User getUser(Integer id) {
         //
@@ -122,5 +128,25 @@ public class UserService {
             }
         }
         return result;
+    }
+
+    public User getUserById(Integer id){
+        //序列化之后存对象User变成了LinkerHashMap类型 ，取的时候则不能变成User类型
+        hashOperations = redisTemplate.opsForHash();
+        User user = null;
+        Boolean b = hashOperations.hasKey("user",id);
+        if(b){
+            user= hashOperations.get("user", id);
+            System.out.println("从redis里面取数据");
+        }else{
+            user = userMapper.selectByPrimaryKey(id);
+            if(user !=null){
+                hashOperations.put("user",id,user);
+                System.out.println("从数据库中取数据");
+            }else{
+                System.out.println("数据库中也没有数据");
+            }
+        }
+        return user;
     }
 }

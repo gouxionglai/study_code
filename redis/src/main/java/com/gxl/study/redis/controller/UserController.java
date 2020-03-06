@@ -24,7 +24,10 @@ public class UserController {
     @RequestMapping("/get/{id}")
     @ResponseBody
     public Object getUser(@PathVariable("id") Integer id){
-        return userService.getUser(id);
+        User user;
+//        user = userService.getUser(id);
+        user = userService.getUserById(id);
+        return user;
     }
 
     @GetMapping("/to_login")
