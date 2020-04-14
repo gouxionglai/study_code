@@ -27,6 +27,7 @@ public class UserService {
     @Autowired
     private RedisTemplate redisTemplate;
 
+
     private HashOperations<String,Integer,User> hashOperations;
 
     public User getUser(Integer id) {
@@ -136,7 +137,11 @@ public class UserService {
         User user = null;
         Boolean b = hashOperations.hasKey("user",id);
         if(b){
+            //开启事务
+            redisTemplate.multi();
             user= hashOperations.get("user", id);
+            //结束事务
+            redisTemplate.exec();
             System.out.println("从redis里面取数据");
         }else{
             user = userMapper.selectByPrimaryKey(id);
