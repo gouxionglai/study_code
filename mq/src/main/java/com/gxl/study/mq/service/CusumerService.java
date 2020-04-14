@@ -7,6 +7,8 @@ import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -41,15 +43,25 @@ public class CusumerService {
             //2. 声明一个exchange
             channel.exchangeDeclare(exchangeName,"topic",true,false,null);
 
-            //3. 声明一个队列
-            channel.queueDeclare(queueName,true,false,false,null);
-
+            //3. 声明一个正常的队列
+            Map<String,Object> arguments = new HashMap<>();
+            arguments.put("x-dead-letter-exchange","dlx.exchange");
+            channel.queueDeclare(queueName,true,false,false,arguments);
             //4. 绑定
             channel.queueBind(queueName,exchangeName,routingKey);
 
-            //5.接受消息:第二个参数代表是否自动签收消息ack。
-            //String message = channel.basicConsume(queueName,true, new MyConsumer(channel));
 
+            /*特殊的声明死信队列  start*/
+            String deadExchangeName = "dead_exchange";
+            String deadQueueName = "deadQueue";
+            String deadRoutingKey = "dead.#";
+            channel.exchangeDeclare(deadExchangeName,"topic",true,false,null);
+            channel.queueDeclare(deadQueueName,true,false,false,null);
+            channel.queueBind(deadQueueName,deadExchangeName,deadRoutingKey);
+            /*特殊的声明死信队列  end*/
+
+            //6.接受消息:第二个参数代表是否自动签收消息ack。
+            //String message = channel.basicConsume(queueName,true, new MyConsumer(channel));
             //设置消息限流
             channel.basicQos(0,3,false);
             //不自动签收消息，必须确认后才接受

@@ -29,12 +29,12 @@ public class MyConsumer extends DefaultConsumer {
         System.out.println("body:"+new String(body));
         //super.handleDelivery(consumerTag, envelope, properties, body);
 
-        if(properties !=null && properties.getMessageId() !=null){
-            //主动应答正确，批量签收true
-            channel.basicAck(envelope.getDeliveryTag(),false);
-        }else{
+        if(properties ==null || properties.getHeaders().get("num") ==null){
             //应答错误
             channel.basicNack(envelope.getDeliveryTag(),false,false);
+        }else{
+            //主动应答正确，批量签收true
+            channel.basicAck(envelope.getDeliveryTag(),false);
         }
 
         try {

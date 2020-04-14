@@ -1,11 +1,14 @@
 package com.gxl.study.mq.service;
 
+import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeoutException;
 
 /**
@@ -50,8 +53,16 @@ public class ProviderService {
             String routingKey = "consumer.save";
             String message = "hello rabbit";
 
+            Map<String,Object> headers = new HashMap<>();
             for (int i = 0; i < 10; i++) {
-                channel.basicPublish(exchangeName,routingKey,null,(message+i).getBytes());
+                //设置properties
+                headers.put("num",i);
+                AMQP.BasicProperties properties = new AMQP.BasicProperties.Builder()
+                        .deliveryMode(2)    // 2代表持久化消息，默认是2
+                        .contentEncoding("UTF-8")
+                        .headers(headers)
+                        .build();
+                channel.basicPublish(exchangeName,routingKey,properties,(message+i).getBytes());
             }
         } catch (IOException e) {
             e.printStackTrace();
