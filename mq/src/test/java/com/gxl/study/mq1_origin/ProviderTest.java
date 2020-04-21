@@ -1,7 +1,6 @@
-package com.gxl.study.mq;
+package com.gxl.study.mq1_origin;
 
-import com.gxl.study.mq.service.CusumerService;
-import com.gxl.study.mq.service.ProviderService;
+import com.gxl.study.mq1_origin.service.ProviderService;
 import com.rabbitmq.client.Connection;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

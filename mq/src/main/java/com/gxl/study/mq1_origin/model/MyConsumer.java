@@ -1,4 +1,4 @@
-package com.gxl.study.mq.model;
+package com.gxl.study.mq1_origin.model;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;

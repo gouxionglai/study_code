@@ -1,0 +1,71 @@
+#\u751F\u4EA7\u7AEF\u914D\u7F6E
+server:
+  port: 8001
+  servlet:
+    context-path: /producer
+
+spring:
+  application:
+    name: producer
+  cloud:
+    stream:
+      bindings:
+        #output_channel\u8FD9\u4E2A\u540D\u5B57\u5FC5\u987B\u548C\u63A5\u53E3\u4E2D\u5B9A\u4E49\u7684\u540D\u5B57\u4E00\u6837
+        output_channel:
+          destination: exchange-3
+          group: queue-3
+          binder: rabbit_cluster
+
+      binders:
+        rabbit_cluster:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                addresses: 47.107.144.99
+                username: guest
+                password: guest
+                virtual-host: /mq
+
+---
+#\u6D88\u8D39\u7AEF\u914D\u7F6E
+server:
+  port: 8002
+  servlet:
+    context-path: /consumer
+
+spring:
+  application:
+    name: consumer
+  cloud:
+    stream:
+      bindings:
+        #input_channel\u8FD9\u4E2A\u540D\u5B57\u5FC5\u987B\u548C\u63A5\u53E3\u4E2D\u5B9A\u4E49\u7684\u540D\u5B57\u4E00\u6837
+        input_channel:
+          destination: exchange-3
+          group: queue-3
+          binder: rabbit_cluster
+          consumer:
+            #\u6700\u5C11\u6D88\u8D39\u6570
+            concurrency: 1
+
+      binders:
+        rabbit_cluster:
+          type: rabbit
+          environment:
+            spring:
+              rabbitmq:
+                addresses: 47.107.144.99
+                username: guest
+                password: guest
+                virtual-host: /mq
+
+      rabbit:
+        bindings:
+          input_channel:
+            consumer:
+              requeue-rejected: false
+              acknowledge-mode: MANUAL
+              recovery-interval: 3000
+              durable-subscription: true
+              max-concurrency: 5

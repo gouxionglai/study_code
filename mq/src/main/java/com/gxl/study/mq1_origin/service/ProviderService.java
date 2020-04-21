@@ -1,4 +1,4 @@
-package com.gxl.study.mq.service;
+package com.gxl.study.mq1_origin.service;
 
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
@@ -27,7 +27,7 @@ public class ProviderService {
         connectionFactory.setHost("47.107.144.99");
         connectionFactory.setPort(5672);
         //虚拟主机
-        connectionFactory.setVirtualHost("/mq");
+        connectionFactory.setVirtualHost("/mq1_origin");
         //用户名密码
         connectionFactory.setUsername("test");
         connectionFactory.setPassword("123");

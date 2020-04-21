@@ -1,6 +1,6 @@
-package com.gxl.study.mq.service;
+package com.gxl.study.mq1_origin.service;
 
-import com.gxl.study.mq.model.MyConsumer;
+import com.gxl.study.mq1_origin.model.MyConsumer;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -24,7 +24,7 @@ public class CusumerService {
         connectionFactory.setHost("47.107.144.99");
         connectionFactory.setPort(5672);
         //虚拟主机
-        connectionFactory.setVirtualHost("/mq");
+        connectionFactory.setVirtualHost("/mq1_origin");
         //用户名密码
         connectionFactory.setUsername("test");
         connectionFactory.setPassword("123");
@@ -51,14 +51,14 @@ public class CusumerService {
             channel.queueBind(queueName,exchangeName,routingKey);
 
 
-            /*特殊的声明死信队列  start*/
+            /* 特殊的声明死信队列  start*/
             String deadExchangeName = "dead_exchange";
             String deadQueueName = "deadQueue";
             String deadRoutingKey = "dead.#";
             channel.exchangeDeclare(deadExchangeName,"topic",true,false,null);
             channel.queueDeclare(deadQueueName,true,false,false,null);
             channel.queueBind(deadQueueName,deadExchangeName,deadRoutingKey);
-            /*特殊的声明死信队列  end*/
+            /* 特殊的声明死信队列  end*/
 
             //6.接受消息:第二个参数代表是否自动签收消息ack。
             //String message = channel.basicConsume(queueName,true, new MyConsumer(channel));

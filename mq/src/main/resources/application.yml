@@ -1,0 +1,15 @@
+spring:
+  rabbitmq:
+    addresses: 47.107.144.99
+    username: guest
+    password: guest
+    virtual-host: /mq
+    connection-timeout: 15000
+    listener:
+      simple:
+        #手动签收
+        acknowledge-mode: manual
+        #消费者的最小数量
+        concurrency: 5
+        #消费者的最大数量
+        max-concurrency: 10
