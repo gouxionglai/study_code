@@ -7,12 +7,12 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.LockSupport;
 
 /**
- * 模范ReentrantLock
+ * 模仿ReentrantLock
  * @author gouxi
  * @description 自定义公平锁AQS(AbstractQueuedSynchronizer )，核心是：cas, 自旋, LockSupport
  * @since 2020/5/11
  */
-public class TuLingLock {
+public class CustomLock {
 
     //锁的状态
     private volatile int state = 0;
@@ -26,7 +26,7 @@ public class TuLingLock {
 
     static{
         try {
-            stateOffset = unsafe.objectFieldOffset(TuLingLock.class.getDeclaredField("state"));
+            stateOffset = unsafe.objectFieldOffset(CustomLock.class.getDeclaredField("state"));
         } catch (NoSuchFieldException e) {
             throw new Error();
         }

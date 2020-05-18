@@ -1,6 +1,6 @@
 package com.gxl.study.AQS.service;
 
-import com.gxl.study.AQS.current.TuLingLock;
+import com.gxl.study.AQS.current.CustomLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +23,8 @@ public class TradeService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
-    //实际生产就直接用 ReentrantLock
-    ReentrantLock lock = new ReentrantLock();
+    //实际生产就直接用 ReentrntLock
+    CustomLock lock = new CustomLock();
 
     public String decStockNoLock(){
         //synchronized, lock -->reentrantLock
