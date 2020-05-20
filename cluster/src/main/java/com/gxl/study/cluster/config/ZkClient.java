@@ -3,15 +3,15 @@ package com.gxl.study.cluster.config;
 
 import com.gxl.study.cluster.properties.ZookeeperProperties;
 import com.gxl.study.cluster.service.SRLockDealCallback;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.CuratorFrameworkFactory.Builder;
 import org.apache.curator.framework.api.ACLProvider;
-import org.apache.curator.framework.recipes.cache.*;
+import org.apache.curator.framework.recipes.cache.ChildData;
+import org.apache.curator.framework.recipes.cache.TreeCache;
+import org.apache.curator.framework.recipes.cache.TreeCacheListener;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
 import org.apache.curator.framework.recipes.locks.InterProcessReadWriteLock;
 import org.apache.curator.framework.state.ConnectionState;
@@ -22,6 +22,8 @@ import org.apache.zookeeper.ZooDefs;
 import org.apache.zookeeper.data.ACL;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -31,13 +33,13 @@ import java.util.concurrent.TimeUnit;
 /**
  * zookeeper客户端
  */
-@Data
-@Slf4j
+@Component
 public class ZkClient {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private CuratorFramework client;
     public TreeCache cache;
+    @Autowired
     private ZookeeperProperties zookeeperProperties;
 
     public ZkClient(ZookeeperProperties zookeeperProperties){
@@ -103,11 +105,11 @@ public class ZkClient {
     private void initLocalCache(String watchRootPath) throws Exception {
         cache = new TreeCache(client, watchRootPath);
         TreeCacheListener listener = (client1, event) ->{
-            log.info("event:" + event.getType() +
+            logger.info("event:" + event.getType() +
                     " |path:" + (null != event.getData() ? event.getData().getPath() : null));
 
             if(event.getData()!=null && event.getData().getData()!=null){
-                log.info("发生变化的节点内容为：" + new String(event.getData().getData()));
+                logger.info("发生变化的节点内容为：" + new String(event.getData().getData()));
             }
 
            // client1.getData().
@@ -172,7 +174,7 @@ public class ZkClient {
         try {
             deleteNode(path,true);
         } catch (Exception ex) {
-            log.error("{}",ex);
+            logger.error("{}",ex);
         }
     }
 
@@ -206,7 +208,7 @@ public class ZkClient {
         try {
             client.setData().forPath(path, datas);
         }catch (Exception ex) {
-            log.error("{}",ex);
+            logger.error("{}",ex);
         }
     }
 
@@ -227,7 +229,7 @@ public class ZkClient {
             client.getData().forPath(path);
             return client.getData().forPath(path);
         }catch (Exception ex) {
-            log.error("{}",ex);
+            logger.error("{}",ex);
         }
         return null;
     }
@@ -309,7 +311,7 @@ public class ZkClient {
 				return value;
 			}
 		}catch(Exception e){
-			log.error("{}",e);
+			logger.error("{}",e);
 		}
 		return null;
 
@@ -326,19 +328,19 @@ public class ZkClient {
 		InterProcessMutex lock = new InterProcessMutex(client, lockPath);
 		try {
 			if (!lock.acquire(time, TimeUnit.SECONDS)) {
-	            log.error("get lock fail:{}", " could not acquire the lock");
+	            logger.error("get lock fail:{}", " could not acquire the lock");
 	            return null;
 	        }
-            log.debug("{} get the lock",lockPath);
+            logger.debug("{} get the lock",lockPath);
             Object b = dealWork.deal();
             return b;
         }catch(Exception e){
-        	log.error("{}", e);
+        	logger.error("{}", e);
         }finally{
         	try {
 				lock.release();
 			} catch (Exception e) {
-				//log.error("{}",e);
+				//logger.error("{}",e);
 			}
         }
 		return null;

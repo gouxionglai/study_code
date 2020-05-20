@@ -5,7 +5,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.curator.framework.recipes.atomic.AtomicValue;
 import org.apache.curator.framework.recipes.atomic.DistributedAtomicLong;
 import org.apache.curator.framework.recipes.locks.InterProcessMutex;
@@ -15,6 +14,8 @@ import org.apache.curator.framework.recipes.shared.VersionedValue;
 import org.apache.curator.retry.RetryNTimes;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,14 +28,19 @@ import java.util.function.Consumer;
 @Api(tags="zookeeper基本操作")
 @RequestMapping("/zk")
 @RestController
-@Slf4j
 public class ZookeeperController {
-
+    private Logger logger = LoggerFactory.getLogger(ZookeeperController.class);
+    
     @Autowired
     private ZkClient zkClient;
 
     @Autowired
     private ZkClient zkClientTest;
+
+    @RequestMapping("/test")
+    public String test(){
+        return "hello world";
+    }
 
     /**
      * 创建节点
@@ -119,11 +125,11 @@ public class ZookeeperController {
         InterProcessMutex readLock = readWriteLock.readLock();
         Runnable writeRunnable = ()->{
             try {
-                log.info("------write lock-----------");
+                logger.info("------write lock-----------");
                 writeLock.acquire();
-                log.info("write acquire");
+                logger.info("write acquire");
                 Thread.sleep(10_000);
-                log.info("write release");
+                logger.info("write release");
                 writeLock.release();
 
             } catch (Exception e) {
@@ -132,11 +138,11 @@ public class ZookeeperController {
         };
         Runnable readRunnable = ()->{
             try {
-                log.info("-------read lock----------");
+                logger.info("-------read lock----------");
                 readLock.acquire();
-                log.info("read acquire");
+                logger.info("read acquire");
                 Thread.sleep(20_000);
-                log.info("read release");
+                logger.info("read release");
                 readLock.release();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -164,11 +170,11 @@ public class ZookeeperController {
     public String watchPath(@RequestBody  String znode){
         znode = "/" + znode;
         zkClient.watchPath(znode,(client1, event) ->{
-            log.info("event:" + event.getType() +
+            logger.info("event:" + event.getType() +
                     " |path:" + (null != event.getData() ? event.getData().getPath() : null));
 
             if(event.getData()!=null && event.getData().getData()!=null){
-                log.info("发生变化的节点内容为：" + new String(event.getData().getData()));
+                logger.info("发生变化的节点内容为：" + new String(event.getData().getData()));
             }
         });
         return "success";
