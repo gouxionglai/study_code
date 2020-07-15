@@ -3,14 +3,18 @@ package com.gxl.study.springcloud;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+
+
+
 
 /**
  * @author gouxi
  * @description
  * @since 2020/6/30
  */
-@SpringBootApplication(exclude = { DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class })
+@EnableEurekaClient
+@SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
 public class OrderApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrderApplication.class,args);

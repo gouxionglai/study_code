@@ -38,4 +38,16 @@ mybatis:
   type-aliases-package: com.gxl.study.springcloud.entity
 logging:
   level:
-    com.gxl.study.cloud.payment.mapper : debug
+    com.gxl.study.cloud.payment.mapper: debug
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      #defaultZone: http://localhost:7001/eureka/ #单机
+      defaultZone: http://eureka7001.com:7001/eureka/,http://eureka7002.com:7002/eureka/,http://eureka7003.com:7003/eureka/
+  instance:
+    instance-id: payment8001
+    prefer-ip-address: true

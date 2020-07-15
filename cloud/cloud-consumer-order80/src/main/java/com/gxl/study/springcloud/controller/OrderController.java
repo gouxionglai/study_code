@@ -24,7 +24,7 @@ public class OrderController {
     @Autowired
     private RestTemplate restTemplate;
 
-    private static final String PAYMENT_URL = "http://localhost:8001/api";
+    private static final String PAYMENT_URL = "http://cloud-payment-service/api";
     @GetMapping("/payment/create")
     public CommonResult create(Payment payment){
         return restTemplate.postForObject(PAYMENT_URL+"/payment/create",payment, CommonResult.class);
