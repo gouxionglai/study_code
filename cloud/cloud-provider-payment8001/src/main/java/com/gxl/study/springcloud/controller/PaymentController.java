@@ -7,7 +7,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author gouxi
@@ -21,6 +25,8 @@ public class PaymentController {
     private Logger logger = LoggerFactory.getLogger(PaymentController.class);
     @Autowired
     private PaymentService paymentService;
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Value("${server.port}")
     private String port;
@@ -49,5 +55,27 @@ public class PaymentController {
         }
     }
 
+
+    @GetMapping("/get/lb")
+    public String getLb(){
+        return port;
+    }
+    /**
+     * @return 自定义返回服务列表
+     */
+    @RequestMapping("/discovery")
+    public Object discovery(){
+        List<String> services = discoveryClient.getServices();
+        for (String s : services){
+            logger.info("服务名："+s);
+        }
+
+        //获取指定service名称的实例集群
+        List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-service");
+        for (ServiceInstance instance : instances){
+            logger.info("实例：id: "+instance.getServiceId()+", host: "+instance.getHost()+"port: "+instance.getPort());
+        }
+        return this.discoveryClient;
+    }
 
 }
