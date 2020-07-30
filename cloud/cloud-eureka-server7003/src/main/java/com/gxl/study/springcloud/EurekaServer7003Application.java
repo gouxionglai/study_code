@@ -3,20 +3,17 @@ package com.gxl.study.springcloud;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 /**
  * @author gouxi
  * @description
- * @since 2020/6/30
+ * @since 2020/7/9
  */
-//自定义负载均衡
-//@RibbonClient(name = "cloud-payment-service",configuration = MySelfRule.class)
-@EnableEurekaClient
+@EnableEurekaServer
 @SpringBootApplication(exclude = DataSourceAutoConfiguration.class)
-public class OrderApplication {
+public class EurekaServer7003Application {
     public static void main(String[] args) {
-        SpringApplication.run(OrderApplication.class,args);
+        SpringApplication.run(EurekaServer7003Application.class,args);
     }
 }

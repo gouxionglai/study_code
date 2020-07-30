@@ -45,7 +45,7 @@ public class OrderController {
         return restTemplate.getForObject(PAYMENT_URL+"/payment/get/"+id, CommonResult.class);
     }
 
-    @GetMapping("/payment/get/lb")
+    @GetMapping("/payment/lb")
     public String getByIDInRule(){
         List<ServiceInstance> instances = discoveryClient.getInstances("cloud-payment-service");
         if(instances == null || instances.size() <= 0) {
@@ -58,8 +58,8 @@ public class OrderController {
         URI uri = instance.getUri();
         System.out.println("uri:"+uri);
         //注意这里有个坑：因为已经指定了url了再用@LoadBalance注解会报错 说找不到instance
-        return restTemplate.getForObject(uri+"/api/payment/get/lb",String.class);
-        //return restTemplate.getForObject("http://localhost:8002"+"/api/payment/get/lb",String.class);
+        return restTemplate.getForObject(uri+"/api/payment/lb",String.class);
+        //return restTemplate.getForObject("http://localhost:8002"+"/api/payment/lb",String.class);
     }
 
 }

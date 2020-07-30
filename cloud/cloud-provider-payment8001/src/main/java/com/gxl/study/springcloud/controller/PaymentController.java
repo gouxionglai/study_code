@@ -12,6 +12,7 @@ import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author gouxi
@@ -56,8 +57,24 @@ public class PaymentController {
     }
 
 
-    @GetMapping("/get/lb")
+    @GetMapping("/lb")
     public String getLb(){
+        return port;
+    }
+
+
+    /**
+     * 超时调用
+     * @return
+     */
+    @GetMapping("/getPort")
+    public String getPort(){
+        try {
+            //Thread.sleep(3000);
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return port;
     }
     /**
