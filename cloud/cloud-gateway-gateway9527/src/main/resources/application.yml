@@ -5,15 +5,29 @@ spring:
     name: cloud-gateway
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true     #开启从注册中心动态创建路由的功能，利用微服务名称进行路由
       routes:   #数组
         - id: payment_routh   #路由id, 命名唯一
-          uri: http://localhost:8001    #匹配后提供服务的路由地址
-          predicates:   #断言 匹配路径
-            - Path=/payment/get/**
+#          uri: http://localhost:8001/api/payment/get/4   #路由：匹配后提供服务的路由地址
+          uri: lb://CLOUD-PAYMENT-SERVICE  #好处：可以负载均衡，不指定具体的服务器  注意前面有一个lb://
+          predicates:   #断言 匹配路径 可以是一组规则
+            - Path=/*/payment/get/**    #需要匹配路径
         - id: payment_routh2   #路由id, 命名唯一
-          uri: http://localhost:8001    #匹配后提供服务的路由地址
-          predicates:   #断言 匹配路径
-            - Path=/payment/lb/**
+          #网页访问路径为localhost:9527/api/payment/get/4 -->跳转到localhost:8001/api/payment/get/4
+#          uri: http://localhost:8001/api    #匹配后提供服务的路由地址
+          uri: lb://CLOUD-PAYMENT-SERVICE
+          predicates:   #断言 匹配路径  ,逗号后 可以跟正则表达式
+            - Path=/**/payment/lb/**
+#            - Query=keep      #参数key为keep 值不限制，即可匹配
+            - Query=keep, pu.  #参数key为keep， 值为pu*的三位数值才可以匹配
+            - Host=**.foo.org
+            - Path=/headers
+            - Method=GET
+            - Header=X-Request-Id, \d+
+            - Cookie=chocolate, ch.p
+
 eureka:
   client:
     service-url:
