@@ -1,0 +1,32 @@
+server:
+  port: 3345
+spring:
+  application:
+    name: cloud-config-client
+  cloud:
+    config:
+      #组合起来就是找http://localhost:3344下 master分支中的application-dev.yml的文件
+      label: master
+      name: application
+      profile: dev
+      uri: http://localhost:3344
+  rabbitmq:
+    host: 47.107.144.99
+    port: 5672
+    username: remoteU
+    password: remotePassword123
+eureka:
+  client:
+    service-url:
+      register-with-eureka: true
+      fetch-registry: true
+      defaultZone: http://eureka7001.com:7001/eureka/
+  instance:
+    hostname: ${spring.application.name}
+
+#暴露bus刷新配置的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

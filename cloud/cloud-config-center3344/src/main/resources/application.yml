@@ -9,9 +9,13 @@ spring:
         git:
           uri: https://github.com/gouxionglai/springcloud-config.git
           search-paths: #搜索目录 //其实就是仓库名字   为了定位到具体的代码分支。
-            - springcloud-config
+            - spring-cloud-config
       label: master  #读取分支
-
+  rabbitmq:
+    host: 47.107.144.99
+    port: 5672
+    username: remoteU
+    password: remotePassword123
 
 eureka:
   client:
@@ -21,3 +25,11 @@ eureka:
       defaultZone: http://eureka7001.com:7001/eureka/
   instance:
     hostname: ${spring.application.name}
+
+#rabbitmq相关设置 ，暴露 bus刷新配置的端点
+management:
+  endpoints:
+    web:
+      exposure:
+        #固定的名称：bus-refresh
+        include: 'bus-refresh'

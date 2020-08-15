@@ -27,6 +27,8 @@
         <module>cloud-hystrix-dashboard9001</module>
         <module>cloud-gateway-gateway9527</module>
         <module>cloud-config-center3344</module>
+        <module>cloud-config-client3345</module>
+        <module>cloud-config-client3346</module>
     </modules>
 
     <name>Maven</name>

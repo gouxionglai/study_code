@@ -1,6 +1,5 @@
 package com.gxl.study.springcloud.service.impl;
 
-import cn.hutool.core.util.IdUtil;
 import com.gxl.study.springcloud.service.PaymentService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
