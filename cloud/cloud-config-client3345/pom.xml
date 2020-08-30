@@ -13,7 +13,7 @@
 
     <dependencies>
         <dependency>
-            <!--spring rabbitMQ -->
+            <!--spring cloud bus -->
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-bus-amqp</artifactId>
         </dependency>

@@ -38,7 +38,7 @@ mybatis:
   type-aliases-package: com.gxl.study.springcloud.entity
 logging:
   level:
-    com.gxl.study.cloud.payment.mapper : debug
+    com.gxl.study.springcloud.mapper: debug
 
 
 eureka:

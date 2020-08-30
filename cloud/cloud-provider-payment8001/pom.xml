@@ -38,7 +38,7 @@
 
         <dependency>
             <groupId>com.alibaba</groupId>
-            <artifactId>druid</artifactId>
+            <artifactId>druid-spring-boot-starter</artifactId>
             <!--如果没写版本,从父层面找,找到了就直接用,全局统一-->
         </dependency>
         <!--mysql-connector-java-->
