@@ -1,4 +1,4 @@
-package com.gxl.study.springcloud;
+package com.gxl.study.springcloud.controller;
 
 import com.gxl.study.springcloud.entity.CommonResult;
 import com.gxl.study.springcloud.entity.Payment;
